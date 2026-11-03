@@ -1,0 +1,48 @@
+/* Visional site.css v1.4: fluid root, globale resets, rich text en module-stijlen. Alleen wat Webflow niet zelf kan. Bron: site/site.css in de repo (docs/site-code.md). Niet aanpassen zonder het contract bij te werken. */
+/* Fluid root: 1rem schaalt mee met de viewport (gelijk aan de huidige visional.nl) */
+:root {
+  --fluid-from-0: 11; --fluid-to-0: 15; --fluid-vw-from-0: calc(1 / 100); --fluid-vw-to-0: calc(479 / 100);
+  --fluid-coef-0: calc((var(--fluid-to-0) - var(--fluid-from-0)) / (var(--fluid-vw-to-0) - var(--fluid-vw-from-0)));
+  --fluid-base-0: calc((var(--fluid-from-0) - var(--fluid-vw-from-0) * var(--fluid-coef-0)) / 16);
+  --fluid-from-1: 13; --fluid-to-1: 15; --fluid-vw-from-1: calc(479 / 100); --fluid-vw-to-1: calc(1440 / 100);
+  --fluid-coef-1: calc((var(--fluid-to-1) - var(--fluid-from-1)) / (var(--fluid-vw-to-1) - var(--fluid-vw-from-1)));
+  --fluid-base-1: calc((var(--fluid-from-1) - var(--fluid-vw-from-1) * var(--fluid-coef-1)) / 16);
+  --fluid-from-2: 15; --fluid-to-2: 18; --fluid-vw-from-2: calc(1440 / 100); --fluid-vw-to-2: calc(1920 / 100);
+  --fluid-coef-2: calc((var(--fluid-to-2) - var(--fluid-from-2)) / (var(--fluid-vw-to-2) - var(--fluid-vw-from-2)));
+  --fluid-base-2: calc((var(--fluid-from-2) - var(--fluid-vw-from-2) * var(--fluid-coef-2)) / 16);
+  --fluid-max: 1.125;
+}
+html { font-size: calc(var(--fluid-max) * 1rem); }
+@media screen and (max-width: 1920px) { html { font-size: calc(var(--fluid-base-2) * 1rem + var(--fluid-coef-2) * 1vw); } }
+@media screen and (max-width: 1440px) { html { font-size: calc(var(--fluid-base-1) * 1rem + var(--fluid-coef-1) * 1vw); } }
+@media screen and (max-width: 479px) { html { font-size: calc(var(--fluid-base-0) * 1rem + var(--fluid-coef-0) * 1vw); } }
+
+/* Visional Design (theme-design, de vacaturepagina's): vette koppen en eyebrows in hoofdletters zoals live.
+   Staat vóór de rich-text-regels, zodat een h2 in rich text zijn eigen stijl houdt. */
+.theme-design h2 { font-size: 2.4rem; font-weight: 700; }
+.theme-design .text-style-eyebrow { font-family: var(--_typography---font--body); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05rem; text-transform: uppercase; color: var(--_theme---accent--base); }
+.theme-design :is(.section_vacature-split, .vacature-details_card, .section_before-after, .section_steps) .text-style-eyebrow { color: var(--_theme---accent--soft); }
+.theme-design .step_title { font-size: 1.25rem; }
+@media (max-width: 767px) { .theme-design h2 { font-size: 2rem; } }
+
+/* Rich text: geen marge boven het eerste en onder het laatste element */
+.w-richtext > :first-child { margin-top: 0; }
+.w-richtext > :last-child { margin-bottom: 0; }
+
+/* Rich text (utility text-rich-text): marges en stijlen zoals de blogs op visional.nl */
+/* h2 2.2rem op alle breakpoints zoals live; size/h2 krimpt op tablet en mobiel */
+.text-rich-text h2 { margin-top: 1.5rem; margin-bottom: 0.5rem; font-family: var(--_typography---font--heading); font-size: 2.2rem; font-weight: 500; line-height: 1.2; }
+.text-rich-text h3 { margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: var(--_typography---size--h4); }
+/* 0.9rem zoals live; daar is geen token voor */
+.text-rich-text p { margin-top: 0.85rem; margin-bottom: 0.5rem; font-size: 0.9rem; line-height: 1.5; opacity: 0.8; }
+.text-rich-text ul, .text-rich-text ol { margin-top: 1rem; margin-bottom: 1.5rem; padding-left: 2rem; }
+.text-rich-text li { margin-bottom: 0.5rem; font-size: var(--_typography---size--text-m); line-height: 1.2; }
+.text-rich-text li:last-child { margin-bottom: 0; }
+/* Lijstitems die via de MCP gebouwd zijn hebben een <p> erin; die moet eruitzien als het lijstitem */
+.text-rich-text li > p { margin: 0; font-size: inherit; line-height: inherit; opacity: 1; }
+.text-rich-text a { color: var(--cobalt--100); text-decoration: underline; }
+/* Text Image Donker (home Over ons, "Je hoeft niet te beginnen"): live text-size-medium, dus 1rem zonder vervaging */
+[data-wf--section---text-image--variant^="donker"] .text-rich-text p { font-size: var(--_typography---size--text-m); opacity: 1; }
+
+/* Toegankelijkheid: zichtbare focus voor toetsenbordgebruikers. Eén regel voor alle elementen; Webflow kan dit alleen per class */
+:focus-visible { outline: 2px solid var(--_theme---action--primary); outline-offset: 2px; }

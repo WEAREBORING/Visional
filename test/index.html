@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>site.js test</title>
+<!-- Testpagina voor site.css en site.js. Open met ?reduce=1 om prefers-reduced-motion na te bootsen. -->
+<script>
+  // Nagebootste reduced motion vóór site.js laadt (de echte media query kan de browser hier niet zetten)
+  if (/reduce=1/.test(location.search)) {
+    var mm = window.matchMedia.bind(window);
+    window.matchMedia = function (q) { return /reduced-motion/.test(q) ? { matches: true, addEventListener: function () {} } : mm(q); };
+  }
+</script>
+<style>
+  /* Minimale stand-in voor de Webflow-tokens en componentclasses */
+  :root { --cobalt--100: #2465ed; --_theme---action--primary: #346dee; --_typography---font--heading: Georgia, serif; --_typography---size--h2: 2.2rem; --_typography---size--h4: 1rem; --_typography---size--text-m: 1rem; }
+  body { margin: 0; font-family: system-ui, sans-serif; color: #032c52; line-height: 1.2; }
+  section { padding: 2rem 1rem; }
+  .section_hero-home { position: relative; overflow: hidden; height: 100vh; isolation: isolate; color: #fff; padding: 0; }
+  .hero-home_background { position: absolute; inset: 0; z-index: -1; background: linear-gradient(#032c52, #2465ed); }
+  .before-after_wrapper { position: relative; overflow: hidden; width: 100%; max-width: 40rem; aspect-ratio: 5 / 3; }
+  .before-after_before, .before-after_after { position: absolute; inset: 0; display: flex; align-items: flex-end; padding: 1rem; }
+  .before-after_before { background: #8195a8; }
+  .before-after_after { background: #33a97e; justify-content: flex-end; clip-path: inset(0 0 0 50%); }
+  .before-after_handle { position: absolute; top: 0; bottom: 0; left: 50%; width: 0.25rem; transform: translateX(-50%); background: #fff; cursor: ew-resize; z-index: 2; }
+  .reviews_slider { overflow: hidden; max-width: 36rem; }
+  .reviews_list { display: flex; gap: 1.5rem; }
+  .reviews_item { flex: 0 0 100%; height: 8rem; background: #f2f4f6; box-sizing: border-box; padding: 1rem; }
+  .is-two .reviews_item { flex-basis: calc(50% - 0.75rem); }
+  .reviews_nav { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+  .reviews_nav-button { display: flex; width: 3rem; height: 3rem; align-items: center; justify-content: center; border-radius: 99rem; background: #032c52; color: #fff; cursor: pointer; }
+  .embed_frame { display: block; width: 100%; border: 0; height: 20rem; }
+  #results { position: fixed; right: 0; top: 0; z-index: 9; background: #fff; border: 1px solid #ccc; padding: 0.5rem; font: 0.75rem monospace; max-width: 22rem; pointer-events: none; opacity: 0.9; }
+  .pass { color: green; } .fail { color: red; }
+</style>
+<link rel="stylesheet" href="../site.css">
+</head>
+<body>
+<div id="results"></div>
+
+<section class="section_hero-home" id="hero">
+  <div class="hero-home_background" data-v-parallax></div>
+  <h1 style="padding: 2rem">Hero (parallax)</h1>
+</section>
+
+<section>
+  <h2>Before after</h2>
+  <div class="before-after_wrapper" data-v-before-after="wrap" data-v-before-after-initial="50" id="ba">
+    <div class="before-after_before">Voor</div>
+    <div class="before-after_after" data-v-before-after="after">Na</div>
+    <div class="before-after_handle" data-v-before-after="handle"></div>
+  </div>
+</section>
+
+<section>
+  <h2>Reviews (1 per view)</h2>
+  <div class="reviews_component" data-v-slider="wrap" id="s1">
+    <div class="reviews_nav">
+      <div class="reviews_nav-button" data-v-slider="prev" aria-label="Vorige review">&larr;</div>
+      <div class="reviews_nav-button" data-v-slider="next" aria-label="Volgende review">&rarr;</div>
+    </div>
+    <div class="reviews_slider"><div><div class="reviews_list" data-v-slider="track">
+      <div class="reviews_item">Review 1</div><div class="reviews_item">Review 2</div><div class="reviews_item">Review 3</div>
+    </div></div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Slider (2 per view)</h2>
+  <div class="reviews_component is-two" data-v-slider="wrap" id="s2">
+    <div class="reviews_nav">
+      <div class="reviews_nav-button" data-v-slider="prev">&larr;</div>
+      <div class="reviews_nav-button" data-v-slider="next">&rarr;</div>
+    </div>
+    <div class="reviews_slider"><div><div class="reviews_list" data-v-slider="track">
+      <div class="reviews_item">A</div><div class="reviews_item">B</div><div class="reviews_item">C</div>
+    </div></div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Embed</h2>
+  <div class="embed_card"><iframe class="embed_frame" data-v-embed id="frame" title="Projectcheck test" srcdoc="<p>iframe</p>"></iframe></div>
+</section>
+
+<section>
+  <div class="text-rich-text w-richtext" id="rt">
+    <h2>Rich text kop</h2><p>Alinea met <a href="#">een link</a>.</p><h3>Subkop</h3><ul><li>Een</li><li>Twee</li></ul><p>Laatste alinea.</p>
+  </div>
+  <div style="height: 150vh"></div>
+</section>
+
+<section id="forms">
+  <section data-v-form-name="contactformulier | Makelaars" data-v-form-redirect="/bedankt-voor-je-interesse-makelaars"><form id="f1" data-name="Contactformulier"></form></section>
+  <section data-v-form-name="Lead" data-v-form-redirect=""><form id="f2" data-name="Contactformulier"></form></section>
+  <section data-v-form-name="" data-v-form-redirect="https://evil.example/x"><form id="f3" data-name="Contactformulier"></form></section>
+  <section data-v-form-redirect="//evil.example"><form id="f4"></form></section>
+  <section data-v-form-redirect="/\evil.example"><form id="f5"></form></section>
+</section>
+
+<script src="../site.js"></script>
+<script>
+(async function () {
+  var out = [], reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function ok(cond, msg) { out.push([!!cond, msg]); console.assert(cond, msg); }
+  function key(el, k) { el.dispatchEvent(new KeyboardEvent('keydown', { key: k, bubbles: true })); }
+  function frame() { return new Promise(function (r) { requestAnimationFrame(function () { requestAnimationFrame(r); }); }); }
+  function tx(el) { return new DOMMatrix(getComputedStyle(el).transform).m41; }
+
+  // Formulier: naam en redirect uit de sectie-attributen
+  var f1 = document.getElementById('f1'), f2 = document.getElementById('f2'), f3 = document.getElementById('f3'), f4 = document.getElementById('f4');
+  ok(f1.getAttribute('data-name') === 'contactformulier | Makelaars' && f1.getAttribute('data-redirect') === '/bedankt-voor-je-interesse-makelaars' && f1.getAttribute('redirect') === '/bedankt-voor-je-interesse-makelaars', 'form: naam en redirect overgenomen');
+  ok(f2.getAttribute('data-name') === 'Lead' && !f2.hasAttribute('data-redirect'), 'form: lege redirect laat succesbericht staan');
+  ok(f3.getAttribute('data-name') === 'Contactformulier' && !f3.hasAttribute('data-redirect'), 'form: lege naam houdt standaard, externe redirect genegeerd');
+  ok(!f4.hasAttribute('data-redirect'), 'form: protocol-relatieve redirect genegeerd');
+  ok(!document.getElementById('f5').hasAttribute('data-redirect'), 'form: redirect met backslash genegeerd');
+
+  // Before after
+  var ba = document.getElementById('ba'), h = ba.querySelector('[data-v-before-after="handle"]'), af = ba.querySelector('[data-v-before-after="after"]');
+  ok(h.getAttribute('role') === 'slider' && h.tabIndex === 0 && h.getAttribute('aria-valuenow') === '50', 'before-after: slider-rol, tabindex en startwaarde 50');
+  key(h, 'ArrowRight'); ok(h.getAttribute('aria-valuenow') === '55' && h.style.left === '55%' && af.style.clipPath.indexOf('55%') > 0, 'before-after: pijl rechts naar 55');
+  key(h, 'ArrowDown'); ok(h.getAttribute('aria-valuenow') === '50', 'before-after: pijl omlaag naar 50');
+  key(h, 'End'); ok(h.getAttribute('aria-valuenow') === '100', 'before-after: End naar 100');
+  key(h, 'ArrowRight'); ok(h.getAttribute('aria-valuenow') === '100', 'before-after: begrensd op 100');
+  key(h, 'Home'); ok(h.getAttribute('aria-valuenow') === '0', 'before-after: Home naar 0');
+  key(h, 'End'); key(h, 'Home'); for (var i = 0; i < 10; i++) key(h, 'ArrowRight');
+  ok(h.getAttribute('aria-valuenow') === '50', 'before-after: terug op 50');
+
+  // Slider, 1 per view
+  var s1 = document.getElementById('s1'), t1 = s1.querySelector('[data-v-slider="track"]'), p1 = s1.querySelector('[data-v-slider="prev"]'), n1 = s1.querySelector('[data-v-slider="next"]');
+  var stride = t1.children[1].offsetLeft - t1.children[0].offsetLeft;
+  ok(p1.getAttribute('aria-disabled') === 'true' && n1.getAttribute('aria-disabled') === 'false', 'slider: start, vorige uit en volgende aan');
+  ok(getComputedStyle(p1).opacity === '0.2', 'slider: uitgeschakelde knop opacity 0.2 (site.css)');
+  ok(t1.children[0].getAttribute('aria-label') === '1 / 3' && t1.getAttribute('aria-live') === 'polite', 'slider: aria zoals Swiper');
+  n1.click(); ok(t1.style.transform === 'translate3d(' + (-stride) + 'px, 0px, 0px)', 'slider: volgende schuift een kaart');
+  key(n1, 'Enter'); ok(n1.getAttribute('aria-disabled') === 'true' && n1.tabIndex === -1, 'slider: Enter op volgende, laatste kaart, knop uit');
+  n1.click(); ok(t1.style.transform.indexOf(-2 * stride + 'px') > 0, 'slider: niet voorbij de laatste kaart');
+  p1.click(); p1.click(); ok(p1.getAttribute('aria-disabled') === 'true', 'slider: terug bij de eerste kaart');
+  ok(reduced ? t1.style.transition === 'none' : t1.style.transition.indexOf('300ms') > -1,'slider: animatie 300ms, of geen bij reduced motion');
+
+  // Slider, 2 per view
+  var s2 = document.getElementById('s2'), n2 = s2.querySelector('[data-v-slider="next"]');
+  n2.click(); ok(n2.getAttribute('aria-disabled') === 'true', 'slider 2 per view: na een stap aan het eind (3 kaarten)');
+
+  // Parallax
+  var bg = document.querySelector('[data-v-parallax]'), hero = document.getElementById('hero');
+  window.scrollTo(0, 0); await frame();
+  ok(reduced ? bg.style.transform === '' : tx(bg) === 0, 'parallax: 0% bovenaan de pagina');
+  window.scrollTo(0, hero.offsetHeight / 2); await frame();
+  var half = bg.offsetHeight * 0.04;
+  ok(reduced ? bg.style.transform === '' : Math.abs(tx(bg) + 0) < 1 && Math.abs(new DOMMatrix(getComputedStyle(bg).transform).m42 - half) < 1, 'parallax: 4% op de helft van de hero' + (reduced ? ' (uit bij reduced motion)' : ''));
+  window.scrollTo(0, hero.offsetHeight * 3); await frame();
+  ok(reduced || Math.abs(new DOMMatrix(getComputedStyle(bg).transform).m42 - bg.offsetHeight * 0.08) < 1, 'parallax: maximaal 8% na de hero');
+  window.scrollTo(0, 0);
+
+  // Embed
+  var f = document.getElementById('frame'), ORIGIN = 'https://visionalprojectscan.lovable.app';
+  function post(data, origin) { window.dispatchEvent(new MessageEvent('message', { data: data, origin: origin, source: f.contentWindow })); }
+  window.dataLayer = [];
+  post({ source: 'visional_projectcheck', event: 'resize', height: 900 }, 'https://evil.example');
+  ok(f.style.height === '', 'embed: resize van een onbekende origin genegeerd');
+  post({ source: 'visional_projectcheck', type: 'resize', height: 900.4 }, ORIGIN);
+  ok(f.style.height === '901px', 'embed: resize (type) zet de hoogte');
+  post({ source: 'visional_projectcheck', event: 'resize', height: 1200 }, ORIGIN);
+  ok(f.style.height === '1200px' && dataLayer.length === 0, 'embed: resize (event) zet de hoogte, geen dataLayer');
+  post({ source: 'visional_projectcheck', event: 'projectcheck_step', step: 2, message: 'x'.repeat(150), has_files: true }, ORIGIN);
+  var last = dataLayer[dataLayer.length - 1];
+  ok(dataLayer.length === 1 && last.event === 'projectcheck_step' && last.pc_step === '2' && last.pc_message.length === 100 && last.pc_has_files === true && 'pc_phase' in last, 'embed: projectcheck-event naar dataLayer met pc_-keys');
+  post({ source: 'visional_projectcheck', event: 'other_event' }, ORIGIN);
+  post({ source: 'iets_anders', event: 'projectcheck_x' }, ORIGIN);
+  post({ source: 'visional_projectcheck', event: 'projectcheck_x' }, 'https://evil.example');
+  ok(dataLayer.length === 1, 'embed: andere events, bronnen en origins genegeerd');
+
+  // Rich text
+  var rt = document.getElementById('rt'), root = parseFloat(getComputedStyle(document.documentElement).fontSize);
+  var cs = function (sel, p) { return getComputedStyle(rt.querySelector(sel)).getPropertyValue(p); };
+  ok(cs('h2', 'margin-top') === '0px', 'rich text: eerste kop zonder marge boven');
+  ok(Math.abs(parseFloat(cs('h3', 'margin-top')) - 1.5 * root) < 0.1 && Math.abs(parseFloat(cs('p', 'font-size')) - 0.9 * root) < 0.1, 'rich text: h3-marge 1.5rem en p 0.9rem');
+  ok(cs('a', 'color') === 'rgb(36, 101, 237)' && cs('a', 'text-decoration-line') === 'underline', 'rich text: link cobalt en onderstreept');
+  ok(Math.abs(parseFloat(cs('ul', 'padding-left')) - 2 * root) < 0.1 && cs('li:last-child', 'margin-bottom') === '0px', 'rich text: lijst inspringing 2rem, laatste li zonder marge');
+
+  var fails = out.filter(function (r) { return !r[0]; }).length;
+  document.getElementById('results').innerHTML = '<b>' + (out.length - fails) + '/' + out.length + ' ok' + (reduced ? ' (reduced motion)' : '') + '</b><br>' +
+    out.map(function (r) { return '<span class="' + (r[0] ? 'pass' : 'fail') + '">' + (r[0] ? 'ok ' : 'FOUT ') + r[1] + '</span>'; }).join('<br>');
+  window.testResult = { total: out.length, fails: fails, failed: out.filter(function (r) { return !r[0]; }).map(function (r) { return r[1]; }) };
+})();
+</script>
+</body>
+</html>
