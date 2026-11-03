@@ -39,3 +39,9 @@ Terugdraaien: zet de vorige tag terug in Webflow en publiceer.
 ## Pagina-code
 
 Code die maar op één pagina hoort, komt in `pages/<slug>.js` en gaat als `<script>` in de custom code van die pagina, met dezelfde tag. Gebruik dit alleen als een `data-v-*`-module in `site.js` niet past.
+
+## Toegang
+
+Visional past deze code zelf aan, met Claude Code in de map `visional-website/` (die zet de repository in `site/`). Wie code uitbrengt, heeft schrijfrechten op deze repository nodig: voeg die persoon toe onder Settings > Collaborators. Lezen kan iedereen, want de repository is publiek.
+
+Gaat de repository later naar een andere eigenaar (bijvoorbeeld een GitHub-organisatie van Visional), zet dan na de verhuizing de nieuwe eigenaar in beide jsDelivr-links in Webflow (`gh/<eigenaar>/Visional@<tag>`) en in `visional-website/CLAUDE.md`.
