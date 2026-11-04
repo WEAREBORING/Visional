@@ -30,7 +30,7 @@ Site settings > Custom code. GTM staat in dezelfde blokken en blijft staan.
 1. Pas `site.js` of `site.css` aan en hoog het versienummer in de eerste commentaarregel op.
 2. Test lokaal met `test/index.html`.
 3. Commit, tag en push: `git tag vX.Y.Z && git push && git push --tags`. Eén tag per release, ook als maar één bestand wijzigt.
-4. Controleer dat jsDelivr de nieuwe versie geeft: `curl -s https://cdn.jsdelivr.net/gh/WEAREBORING/Visional@vX.Y.Z/site.js | head -1`.
+4. Controleer dat jsDelivr de nieuwe versie geeft: `curl -s https://cdn.jsdelivr.net/gh/WEAREBORING/Visional@vX.Y.Z/site.js | head -1`. Vraag daarna ook `site.min.js` en `site.min.css` op tot ze 200 geven: jsDelivr maakt de `.min`-bestanden pas bij het eerste verzoek, en dat eerste verzoek kan in de browser mislukken (dan draait site.js niet). Gaf de push een fout (GitHub gaf soms 500, soms alleen op de tag), controleer dan `main` en de tag met `git ls-remote origin`.
 5. Lees het head- en footerblok in Webflow (`get_site_freeform_code`), vervang alleen de tag in de link en schrijf het blok terug (`set_site_freeform_code`).
 6. Publiceer naar webflow.io en controleer de pagina in de browser.
 
